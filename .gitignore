@@ -219,3 +219,29 @@ __marimo__/
 
 # User uploaded datasets
 data/uploads/
+
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Environment variables
+.env
+.env.*
+backend/.env
+
+# Uploaded datasets
+data/uploads/*
+!data/uploads/.gitkeep
+
+# Node
+frontend/node_modules/
+frontend/dist/
+
+# VS Code
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
