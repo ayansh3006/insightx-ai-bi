@@ -50,7 +50,9 @@ Answer displayed in React
 
 ## Project Screenshot 📸
 
-![InsightX](screenshots/insightx.png)
+![InsightX](Screenshots/image1.png)
+![InsightX](Screenshots/image2.png)
+![InsightX](Screenshots/image3.png)
 
 ## Sample Questions 💡
 
