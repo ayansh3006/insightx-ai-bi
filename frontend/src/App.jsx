@@ -13,9 +13,7 @@ import {
 
 import "./App.css";
 
-
 const API_BASE_URL = "http://127.0.0.1:8000";
-
 
 function App() {
   const fileInputRef = useRef(null);
@@ -30,7 +28,6 @@ function App() {
   const [error, setError] = useState("");
 
   const [dragActive, setDragActive] = useState(false);
-
 
   // --------------------------------------------------
   // FILE VALIDATION
@@ -54,7 +51,6 @@ function App() {
     return true;
   };
 
-
   // --------------------------------------------------
   // FILE SELECTION
   // --------------------------------------------------
@@ -71,7 +67,6 @@ function App() {
     setAnswer(null);
   };
 
-
   // --------------------------------------------------
   // INPUT CHANGE
   // --------------------------------------------------
@@ -84,7 +79,6 @@ function App() {
     }
   };
 
-
   // --------------------------------------------------
   // DRAG EVENTS
   // --------------------------------------------------
@@ -94,11 +88,9 @@ function App() {
     setDragActive(true);
   };
 
-
   const handleDragLeave = () => {
     setDragActive(false);
   };
-
 
   const handleDrop = (event) => {
     event.preventDefault();
@@ -110,7 +102,6 @@ function App() {
       handleFileSelect(droppedFile);
     }
   };
-
 
   // --------------------------------------------------
   // UPLOAD DATASET
@@ -158,7 +149,6 @@ function App() {
       setUploading(false);
     }
   };
-
 
   // --------------------------------------------------
   // ASK QUESTION
@@ -217,7 +207,6 @@ function App() {
     }
   };
 
-
   // --------------------------------------------------
   // REMOVE FILE
   // --------------------------------------------------
@@ -234,7 +223,6 @@ function App() {
     }
   };
 
-
   // --------------------------------------------------
   // EXAMPLE QUESTIONS
   // --------------------------------------------------
@@ -246,6 +234,43 @@ function App() {
     "What is the average value of the numeric data?",
   ];
 
+  // --------------------------------------------------
+  // FORMAT ANSWER
+  // --------------------------------------------------
+
+  const formatAnswer = (text) => {
+    if (!text) {
+      return null;
+    }
+
+    const lines = text.split(/\r?\n/);
+
+    return lines.map((line, index) => {
+      const trimmedLine = line.trim();
+
+      if (!trimmedLine) {
+        return (
+          <div
+            key={index}
+            className="answer-spacer"
+          />
+        );
+      }
+
+      return (
+        <div
+          key={index}
+          className="answer-line"
+        >
+          {trimmedLine}
+        </div>
+      );
+    });
+  };
+
+  // --------------------------------------------------
+  // MAIN UI
+  // --------------------------------------------------
 
   return (
     <div className="app-shell">
@@ -257,7 +282,6 @@ function App() {
       <div className="background-glow glow-one"></div>
       <div className="background-glow glow-two"></div>
 
-
       {/* --------------------------------------------- */}
       {/* NAVBAR */}
       {/* --------------------------------------------- */}
@@ -265,20 +289,24 @@ function App() {
       <header className="navbar">
 
         <div className="brand">
+
           <div className="brand-icon">
             <BarChart3 size={22} />
           </div>
 
           <span>InsightX</span>
+
         </div>
 
         <div className="navbar-tag">
+
           <Sparkles size={15} />
+
           AI Dataset Analyst
+
         </div>
 
       </header>
-
 
       {/* --------------------------------------------- */}
       {/* MAIN */}
@@ -291,8 +319,11 @@ function App() {
         <section className="hero-section">
 
           <div className="hero-badge">
+
             <Sparkles size={15} />
+
             Chat with your data
+
           </div>
 
           <h1>
@@ -308,7 +339,6 @@ function App() {
 
         </section>
 
-
         {/* ------------------------------------------- */}
         {/* UPLOAD CARD */}
         {/* ------------------------------------------- */}
@@ -322,15 +352,16 @@ function App() {
             </div>
 
             <div>
+
               <h2>Upload your dataset</h2>
 
               <p>
                 CSV or XLSX files are supported
               </p>
+
             </div>
 
           </div>
-
 
           {!file ? (
 
@@ -403,7 +434,6 @@ function App() {
 
           )}
 
-
           {file && !dataset && (
 
             <button
@@ -418,11 +448,13 @@ function App() {
                     size={18}
                     className="spin"
                   />
+
                   Processing dataset...
                 </>
               ) : (
                 <>
                   <Upload size={18} />
+
                   Analyze dataset
                 </>
               )}
@@ -430,7 +462,6 @@ function App() {
             </button>
 
           )}
-
 
           {dataset && (
 
@@ -457,7 +488,6 @@ function App() {
           )}
 
         </section>
-
 
         {/* ------------------------------------------- */}
         {/* QUESTION SECTION */}
@@ -487,7 +517,6 @@ function App() {
               </div>
 
             </div>
-
 
             {/* QUESTION INPUT */}
 
@@ -536,7 +565,6 @@ function App() {
 
             </div>
 
-
             {/* EXAMPLES */}
 
             <div className="examples">
@@ -566,7 +594,6 @@ function App() {
 
             </div>
 
-
             {/* --------------------------------------- */}
             {/* ANSWER */}
             {/* --------------------------------------- */}
@@ -591,13 +618,13 @@ function App() {
 
                 </div>
 
+                {/* MODIFIED ANSWER CONTENT */}
 
                 <div className="answer-content">
 
-                  {answer.answer}
+                  {formatAnswer(answer.answer)}
 
                 </div>
-
 
                 <div className="answer-meta">
 
@@ -624,7 +651,6 @@ function App() {
 
         )}
 
-
         {/* ------------------------------------------- */}
         {/* ERROR */}
         {/* ------------------------------------------- */}
@@ -642,7 +668,6 @@ function App() {
           </div>
 
         )}
-
 
         {/* ------------------------------------------- */}
         {/* FOOTER */}
@@ -665,6 +690,5 @@ function App() {
     </div>
   );
 }
-
 
 export default App;

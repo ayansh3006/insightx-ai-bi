@@ -34,7 +34,7 @@ client = OpenAI(
 )
 
 
-MODEL_NAME = "qwen/qwen3.8-27b:free"
+MODEL_NAME = "openrouter/free"
 
 
 # --------------------------------------------------

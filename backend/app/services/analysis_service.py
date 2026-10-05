@@ -1,6 +1,46 @@
 from pathlib import Path
+import math
 
 import pandas as pd
+
+
+# ==================================================
+# JSON SAFETY
+# ==================================================
+
+def make_json_safe(value):
+    """
+    Convert Pandas/NumPy values that are not JSON compliant
+    into JSON-safe Python values.
+    """
+
+    if value is None:
+        return None
+
+    if isinstance(value, float):
+        if math.isnan(value) or math.isinf(value):
+            return None
+        return value
+
+    if hasattr(value, "item"):
+        try:
+            return make_json_safe(value.item())
+        except Exception:
+            pass
+
+    if isinstance(value, dict):
+        return {
+            key: make_json_safe(val)
+            for key, val in value.items()
+        }
+
+    if isinstance(value, list):
+        return [
+            make_json_safe(item)
+            for item in value
+        ]
+
+    return value
 
 
 # ==================================================
@@ -204,9 +244,7 @@ def apply_date_filters(
             errors="coerce",
         )
 
-        date_value = parse_date_value(
-            value
-        )
+        date_value = parse_date_value(value)
 
         if operator == "date_eq":
             mask = (
@@ -330,10 +368,10 @@ def run_analysis(
                 ),
             })
 
-        return {
+        return make_json_safe({
             "operation": operation,
             "result": columns,
-        }
+        })
 
     # --------------------------------------------------
     # SUMMARY
@@ -342,9 +380,7 @@ def run_analysis(
     if operation == "summary":
 
         numeric_columns = []
-
         text_columns = []
-
         date_columns = []
 
         for name in df.columns:
@@ -378,7 +414,7 @@ def run_analysis(
             if df[name].isna().sum() > 0
         }
 
-        return {
+        return make_json_safe({
             "operation": operation,
             "result": {
                 "row_count": int(
@@ -401,7 +437,7 @@ def run_analysis(
                     missing_by_column
                 ),
             },
-        }
+        })
 
     # --------------------------------------------------
     # MISSING VALUES
@@ -431,10 +467,10 @@ def run_analysis(
                 "missing_percentage": percentage,
             })
 
-        return {
+        return make_json_safe({
             "operation": operation,
             "result": missing,
-        }
+        })
 
     # --------------------------------------------------
     # COUNT ROWS
@@ -442,12 +478,12 @@ def run_analysis(
 
     if operation == "count_rows":
 
-        return {
+        return make_json_safe({
             "operation": operation,
             "result": int(
                 len(working_df)
             ),
-        }
+        })
 
     # --------------------------------------------------
     # SINGLE COLUMN AGGREGATIONS
@@ -495,11 +531,11 @@ def run_analysis(
         elif hasattr(result, "item"):
             result = result.item()
 
-        return {
+        return make_json_safe({
             "operation": operation,
             "column": column,
             "result": result,
-        }
+        })
 
     # --------------------------------------------------
     # GROUP BY
@@ -605,13 +641,13 @@ def run_analysis(
             orient="records"
         )
 
-        return {
+        return make_json_safe({
             "operation": operation,
             "group_by": group_by,
             "column": column,
             "aggregation": aggregation,
             "result": records,
-        }
+        })
 
     # --------------------------------------------------
     # SORT / TOP N
@@ -640,6 +676,7 @@ def run_analysis(
             working_df.sort_values(
                 by=sort_by,
                 ascending=ascending,
+                na_position="last",
             )
         )
 
@@ -652,13 +689,13 @@ def run_analysis(
             orient="records"
         )
 
-        return {
+        return make_json_safe({
             "operation": operation,
             "sort_by": sort_by,
             "sort_order": sort_order,
             "limit": limit,
             "result": records,
-        }
+        })
 
     # --------------------------------------------------
     # UNKNOWN OPERATION
