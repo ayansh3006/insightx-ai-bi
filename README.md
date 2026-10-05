@@ -69,29 +69,28 @@ Answer displayed in React
 
 ## Project Structure 📁
 
-insightx-ai-bi/
-│
-├── backend/
-│   ├── app/
-│   │   ├── models/
-│   │   ├── routes/
-│   │   └── services/
-│   └── requirements.txt
-│
-├── frontend/
-│   ├── src/
-│   └── package.json
-│
-├── data/
-│   ├── sample/
-│   └── uploads/
-│
-├── screenshots/
-│   └── insightx.png
-│
-├── .gitignore
-├── README.md
-└── LICENSE
+    insightx-ai-bi/
+    ├── backend/
+    │   ├── app/
+    │   │   ├── models/
+    │   │   ├── routes/
+    │   │   └── services/
+    │   └── requirements.txt
+    │
+    ├── frontend/
+    │   ├── src/
+    │   └── package.json
+    │
+    ├── data/
+    │   ├── sample/
+    │   └── uploads/
+    │
+    ├── Screenshots/
+    │   └── insightx.png
+    │
+    ├── .gitignore
+    ├── README.md
+    └── LICENSE
 
 ## How to Run ▶️
 
